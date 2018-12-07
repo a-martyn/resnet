@@ -5,7 +5,7 @@
 .*.DS_Store
 
 # Ignore data dirs
-data/
+data/*
 
 # creds
 *.tfvars
