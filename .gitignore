@@ -4,6 +4,9 @@
 /out
 .*.DS_Store
 
+# Ignore data dirs
+data/
+
 # creds
 *.tfvars
 
