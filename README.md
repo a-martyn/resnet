@@ -9,4 +9,11 @@ The key insight provided by the paper is that "shortcuts" between network layers
 
 ![Figure 6.](./assets/fig6.png)
 
-Figure 6. Training on CIFAR-10. Dashed lines denote training error, and bold lines denote testing error. **Left**: plain networks. The error of plain-110 is higher than 60% and not displayed. **Right**: ResNets.
+Figure 6. (from original paper) Training on CIFAR-10. Dashed lines denote training error, and bold lines denote testing error. **Left**: plain networks. The error of plain-110 is higher than 60% and not displayed. **Right**: ResNets.
+
+## Results from this implementation
+
+![Figure 6. Recreation](./assets/fig6_recreation.png)
+
+A recreation of Figure 6. showing the results from this implementation for comparison. All annotations are matched.
+
