@@ -7,5 +7,5 @@ The key insight provided by the paper is that "shortcuts" between network layers
 
 ## Results from the original paper
 
-
+![Figure 6.](fig6.png)
 
