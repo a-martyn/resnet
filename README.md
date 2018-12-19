@@ -1,4 +1,4 @@
-# Deep Residual Learning for Image Recognition: CIFAR-10 
+# Deep Residual Learning for Image Recognition: CIFAR-10, PyTorch Implementation
 
 This repository provides an implementation of the paper *Deep Residual Learning for Image Recogniton* by Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Han Sun [1] which won the first place on the tasks of ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation. The experiment from section 4.2 of the paper, based on the CIFAR-10 dataset, is reproduced here using the PyTorch framework.
 
