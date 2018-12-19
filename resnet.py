@@ -38,13 +38,16 @@ class block(nn.Module):
         """
         # Determine subsampling
         s = 0.5 if subsample else 1.0
+#         kernel_size = 1 if subsample else 3
+#         padding = 0 if subsample else 1
         
         # Setup layers
-        self.conv1 = nn.Conv2d(int(filters*s), filters, kernel_size=3, stride=int(1/s), padding=1, bias=False)
-        self.bn1   = nn.BatchNorm2d(filters, track_running_stats=False)
+        self.conv1 = nn.Conv2d(int(filters*s), filters, kernel_size=3, 
+                               stride=int(1/s), padding=1, bias=False)
+        self.bn1   = nn.BatchNorm2d(filters, track_running_stats=True)
         self.relu1 = nn.ReLU()
         self.conv2 = nn.Conv2d(filters, filters, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn2   = nn.BatchNorm2d(filters, track_running_stats=False)
+        self.bn2   = nn.BatchNorm2d(filters, track_running_stats=True)
         self.relu2 = nn.ReLU()
 
         # Shortcut downsampling
@@ -108,7 +111,7 @@ class ResNet(nn.Module):
         
         # Input
         self.convIn = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bnIn   = nn.BatchNorm2d(16, track_running_stats=False)
+        self.bnIn   = nn.BatchNorm2d(16, track_running_stats=True)
         self.relu   = nn.ReLU()
         
         # Stack1
