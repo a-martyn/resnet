@@ -4,6 +4,8 @@ This repository provides an implementation of the paper *Deep Residual Learning 
 
 This implementation reproduces the original paper’s observations within less than 1% of the reported test error.
 
+This is the first publicly available implementation of the CIFAR-10 experiment in PyTorch that I'm aware of (section 4.2 in the original paper). It is distinct from the ResNet provided within the PyTorch `torchvision` package, in that identity mapping shortcuts are used without learnable parameters, as opposed to 1x1 convolutions. 
+ 
 `main.ipynb` in this repo is a jupyter notebook that runs the all experiments reported here end-to-end. The trained models that achieved the highest test error for each experiment are provided in `./pretrained`. The experiment results are provided in full as .csvs in `./results`.
 
 ## Results from the original paper
