@@ -6,13 +6,13 @@ This implementation reproduces the original paper’s observations within less t
 
 `main.ipynb` in this repo is a jupyter notebook that runs the all experiments reported here end-to-end. The trained models that achieved the highest test error for each experiment are provided in `./pretrained`. The experiment results are provided in full as .csvs in `./results`.
 
-## Training results from the original paper
+## Results from the original paper
 
 ![Figure 6.](./assets/fig6.png)
 
 Figure 6. (from original paper) Training on CIFAR-10. Dashed lines denote training error, and bold lines denote testing error. **Left**: plain networks. The error of plain-110 is higher than 60% and not displayed. **Right**: ResNets.
 
-## Training results from this implementation
+## Results from this implementation
 
 ![Figure 6. Recreation](./assets/fig6_recreation.png)
 
