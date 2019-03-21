@@ -1,12 +1,9 @@
 # Deep Residual Learning for Image Recognition: CIFAR-10, PyTorch Implementation
 
-An implementation of the "ResNet" paper *Deep Residual Learning for Image Recogniton* [1] in PyTorch. 
+An implementation of the "ResNet" paper *Deep Residual Learning for Image Recogniton* [1] in PyTorch. The original observations are reproduced here within 1% of the reported test error.
 
 The CIFAR-10 experiment from section 4.2 of the paper is reproduced. For this experiment the authors proposed identity mapping shortcuts without learnable parameters, as opposed to 1x1 convolutions. 
-
-The original observations are reproduced here within 1% of the reported test error.
  
-`main.ipynb` in this repo is a jupyter notebook that runs all experiments reported here end-to-end. The trained models that achieved the highest test error for each experiment are provided in `./pretrained`. The experiment results are provided in full as .csvs in `./results`.
 
 ## Results from the original paper
 
@@ -33,17 +30,9 @@ A recreation of Figure 6. showing the results from this implementation for compa
 | ResNet | 44 | 7.17 | 7.38 |
 | ResNet | 56 | 6.97 | 7.33 |
 
-\* These figures are approximate readings from Figure 6. as they aren't provided by the original paper.
+\* approximate readings from Figure 6.
 
-Classification error on the CIFAR-10 test set. All methods are with data augmentation. The lowest test error achieved across all training epochs is reported.  
-
-The best test error reproduced for plain networks is approximately equivalent to the original paper. 
-
-The best test error reproduced for residual networks is 0.36% higher than cited in the original paper.
-
-For the 20 layer residual network in this implementation we observe a test error 0.75% below that reported in the original paper.
-
-This implementations seems to yield notably higher variance in test error prior to epoch 81 when the learning rate is 0.1. After this point the learning rate is reduced to 0.01 and the variance decreases. 
+Classification error on the CIFAR-10 test set. The lowest test error achieved across all training epochs is reported. The best test error reproduced for plain networks is approximately equivalent to the original paper and 0.36% higher than cited in the original paper for resnets. For the 20-layer resnet we observe a test error 0.75% below that reported in the original paper.
 
 ## Summary
 
