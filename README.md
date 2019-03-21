@@ -1,11 +1,47 @@
 # Deep Residual Learning for Image Recognition: CIFAR-10, PyTorch Implementation
 
-An implementation of the "ResNet" paper *Deep Residual Learning for Image Recogniton* [1] in PyTorch. The original observations are reproduced here within 1% of the reported test error.
+An implementation of the "ResNet" paper *Deep Residual Learning for Image Recogniton* [1]. This PyTorch implementation produces results within 1% of the authors' reported test error. 
 
-The CIFAR-10 experiment from section 4.2 of the paper is reproduced. For this experiment the authors proposed identity mapping shortcuts without learnable parameters, as opposed to 1x1 convolutions. 
- 
+The main training procedure is described as a jupyter notebook in `main.ipynb` viewable [here](https://nbviewer.jupyter.org/github/a-martyn/resnet/blob/master/main.ipynb).
 
-## Results from the original paper
+The CIFAR-10 experiment from section 4.2 of the paper is reproduced. The goal is to classify tiny 32x32 pixel images into one of 10 classes. Here's some examples:
+
+![cifar10](./assets/cifar10.png)
+
+## Getting Started
+
+### Prequesites
+
+- Linux or MacOS
+- Python 3
+- CPU or NVIDIA GPU + CUDA CuDNN
+
+### Installation
+
+Clone this repo:
+
+```
+git clone https://github.com/a-martyn/resnet.git
+cd resnet
+```
+
+Setup environment and install dependencies with pip:
+
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Train the model! Launch jupyter notebooks and run `main.ipynb`:
+
+```
+jupyter notebook
+```
+- in Jupyter open `main.ipynb` and execute top-to-bottom
+
+
+ ## Results from the original paper
 
 ![Figure 6.](./assets/fig6.png)
 
