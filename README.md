@@ -4,7 +4,7 @@ An implementation of the "ResNet" paper *Deep Residual Learning for Image Recogn
 
 The main training procedure is described as a jupyter notebook in `main.ipynb` viewable [here](https://nbviewer.jupyter.org/github/a-martyn/resnet/blob/master/main.ipynb).
 
-The CIFAR-10 experiment from section 4.2 of the paper is reproduced. The goal is to classify tiny 32x32 pixel images into one of 10 classes. Here's some examples:
+The CIFAR-10 experiment from section 4.2 of the paper is reproduced. The goal is to classify tiny 32x32 pixel images into one of 10 classes. Some examples below. This implementation achieves 92.67% test set accuracy in this setting.
 
 ![cifar10](./assets/cifar10.png)
 
