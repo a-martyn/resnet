@@ -1,12 +1,12 @@
 # Deep Residual Learning for Image Recognition: CIFAR-10, PyTorch Implementation
 
-This repository provides an implementation of the paper *Deep Residual Learning for Image Recogniton* by Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Han Sun [1] which won the first place on the tasks of ImageNet detection, ImageNet localisation, COCO detection, and COCO segmentation. The experiment from section 4.2 of the paper, based on the CIFAR-10 dataset, is reproduced here using the PyTorch framework.
+An implementation of the "ResNet" paper *Deep Residual Learning for Image Recogniton* [1] in PyTorch. 
 
-This implementation reproduces the original paper’s observations within less than 1% of the reported test error.
+The CIFAR-10 experiment from section 4.2 of the paper is reproduced. For this experiment the authors proposed identity mapping shortcuts without learnable parameters, as opposed to 1x1 convolutions. 
 
-This is the first publicly available implementation of the CIFAR-10 experiment in PyTorch that I'm aware of (section 4.2 in the original paper). It is distinct from the ResNet provided within the PyTorch `torchvision` package, in that identity mapping shortcuts are used without learnable parameters, as opposed to 1x1 convolutions. 
+The original observations are reproduced here within 1% of the reported test error.
  
-`main.ipynb` in this repo is a jupyter notebook that runs the all experiments reported here end-to-end. The trained models that achieved the highest test error for each experiment are provided in `./pretrained`. The experiment results are provided in full as .csvs in `./results`.
+`main.ipynb` in this repo is a jupyter notebook that runs all experiments reported here end-to-end. The trained models that achieved the highest test error for each experiment are provided in `./pretrained`. The experiment results are provided in full as .csvs in `./results`.
 
 ## Results from the original paper
 
@@ -45,27 +45,25 @@ For the 20 layer residual network in this implementation we observe a test error
 
 This implementations seems to yield notably higher variance in test error prior to epoch 81 when the learning rate is 0.1. After this point the learning rate is reduced to 0.01 and the variance decreases. 
 
-## Analysis
+## Summary
 
-The key observation of the original paper is that residual layers enable deep networks, with more than 20 layers, to outperform shallower networks. That observation is reproduced here with the deepest 56 layer residual network outperforming all other networks tested, whilst the equivalent 56 layer plain network performed the worst.
+The authors report that residual layers enable deep networks, with more than 20 layers, to outperform shallower networks. That observation is reproduced here with the deepest 56-layer residual network outperforming all other networks tested, whilst the equivalent 56 layer plain network performed the worst.
 
-The original paper also reported that residual layers improved the performance of smaller networks, for example in Figure 6. the 20 layer ResNet outperforms its 'plain' counterpart. That result is also reproduced here with the residual 20 layer network outperforming the plain network by 1.5%.
+The original paper also reported that residual layers improved the performance of smaller networks, for example in Figure 6. the 20-layer ResNet outperforms its 'plain' counterpart. That result is also reproduced here with the residual 20-layer network outperforming the plain network by 1.5%.
 
-## Implementation notes and uncertainties
+## Implementation notes
 
-Here I note some ambiguities found in the original paper that for which I made assumptions, as well as some interesting observations that I stumbled across during implementation:
-
-1. **Data Augmentation**: I don't think it is explicitly clear what cropping algorithm the authors employed. The authors describe a 'random crop' whilst referencing a paper [2] that describes 'corner cropping'. It seems this could be interpreted as either of the following, of which I chose RandomCrop:
-    - `torchvision.transforms.RandomCrop`: Crop the given PIL Image at a random location.
+1. **Data Augmentation**: The authors describe a 'random crop' whilst referencing a paper [2] that describes 'corner cropping'. This could be interpreted as either of the following:
+    - `torchvision.transforms.RandomCrop`: Crop the given PIL Image at a random location (used here).
     - `torchvision.transforms.FiveCrop`: Crop the given PIL Image into four corners and the central crop
 
 2. **Zero Padding**: The paper specifies kernel size of 3x3 with stride of 1 for most convolutions in the architectures. Where this occurs it is stated that the feature map size is maintained, yet this would not be possible unless a zero-padding of 1 pixel is accounted for during convolution. This implementation therefore assumes a zero padding of 1.
 
-3. **Subsampling**: The architecture described includes subsampling to decrease the feature map size from 32x32 to 16x16 to 8x8, with filter counts increasing 16 to 32 to 64 respectively. This is achieved by using a kernel size of 3x3 pixels with a stride of 2. It can be shown that this convolution does not exactly fit into any even sized feature map. The leading edge of the final convolution in each row will have no input. It is assumed that this discrepancy is of no effect to the performance of the network and so can be ignored. 
+3. **Subsampling**: The architecture described includes subsampling to decrease the feature map size from 32x32 to 16x16 to 8x8, with filter counts increasing 16 to 32 to 64 respectively. A kernel size of 3x3 pixels with a stride of 2 achieves this. This convolution does not exactly fit into any even sized feature map.
 
-4. **Downsampling Shortcuts**: When a residual block downsamples its input the feature map size is halved in both dimensions whilst the number of filters is doubled. This means that the residual shortcut cannot simply add the block's input matrix to the its output because the dimensions do not match. Some form of 'downsampling' is required. For the CIFAR-10 experiment the authors describe linear mapping to perform this downsampling (see 'option A' section 3.3). The important characteristic here is that the downsampling procedure should add no additional learnable parameters. This implementation achieves this with a 2d average pooling of kernel size 1 and stride 2, effectively dropping every other pixel, which results in feature maps halved in each dimension. We then need to double the number of filters which is achieved crudely by concatenating a duplicate of the downsampled feature maps multiplied by zero. This approach seems crude because half of the input information is simply ignored by the residual shortcut. It seems that this approach might have a desirable a regularisation effect similar to that achieved by dropout [3]. Or would performance be improved by reshaping the input to match the output dimensions? Some relevant investigation is provided here [4].
+4. **Downsampling Shortcuts**: When a residual block downsamples its input the feature map size is halved in both dimensions whilst the number of filters is doubled. This means that the residual shortcut cannot simply add the block's input matrix to the its output because the dimensions do not match. Some form of 'downsampling' is required. For the CIFAR-10 experiment the authors describe linear mapping to perform this downsampling (see 'option A' section 3.3). The important characteristic here is that the downsampling procedure should add no additional learnable parameters. This implementation achieves this with a 2d average pooling of kernel size 1 and stride 2, effectively dropping every other pixel, which results in feature maps halved in each dimension. We then need to double the number of filters by concatenating a duplicate of the downsampled feature maps multiplied by zero. This seems crude because half of the input information is simply ignored by the residual shortcut. Would performance be improved by reshaping the input to match the output dimensions? Some investigation is provided here [4].
 
-5. **Batch Normalisation**: During implementation I observed that batch normalisation is critical to reproducing the original results. Specifically it is critical that the batch normalisation implementation uses running estimates of mean and standard deviation across batches (`track_running_stats=True` in PyTorch). This yields a 2-3% reduction in test error, and interestingly without this feature residual shortcuts provide no improvement for the smallest 20-layer network. In addition I discovered a [comment](https://github.com/KaimingHe/deep-residual-networks/issues/10) from the authors clarifying  that they chose not to implement bias in the convolutional layers, instead adding learnable bias in the batch normalisation layers. I implemented this with the `affine=True` parameter of the PyTorch function `torch.nn.BatchNorm2d`.
+5. **Batch Normalisation**: batch normalisation with running estimates of mean and standard deviation  is critical to reproducing the original results. This yields a 2-3% reduction in test error, and interestingly without this feature residual shortcuts provide no improvement for the smallest 20-layer network.
 
 ## References
 
