@@ -11,20 +11,20 @@ Paper reads: "biases are omitted for simplifying notation" (p.3) which is ambigu
 Clarification from Kaiming He here:
 >"Biases are in the BN layers that follow." (https://github.com/KaimingHe/deep-residual-networks/issues/10)
 
-This can be accomplished in PyTorch BatchNorm2d by setting affin=True (default). 
+This can be accomplished in PyTorch BatchNorm2d by setting affine=True (default). 
 """
 
 class block(nn.Module):
     def __init__(self, filters, subsample=False):
         super().__init__()
         """
-        A 2 layer residual learning building block as illustrated by Fig.2
-        in "Deep Residual Learning for Imagew Recognition"
+        A 2-layer residual learning building block as illustrated by Fig.2
+        in "Deep Residual Learning for Image Recognition"
         
         Parameters:
         
         - filters:   int
-                     the number of fulters for all layers in this block
+                     the number of filters for all layers in this block
                    
         - subsample: boolean
                      whether to subsample the input feature maps with stride 2
@@ -38,8 +38,6 @@ class block(nn.Module):
         """
         # Determine subsampling
         s = 0.5 if subsample else 1.0
-#         kernel_size = 1 if subsample else 3
-#         padding = 0 if subsample else 1
         
         # Setup layers
         self.conv1 = nn.Conv2d(int(filters*s), filters, kernel_size=3, 
@@ -56,7 +54,6 @@ class block(nn.Module):
         # Initialise weights according to the method described in 
         # “Delving deep into rectifiers: Surpassing human-level performance on ImageNet 
         # classification” - He, K. et al. (2015)
-        # NOTE: This seems to have degraded performance by ~4% in early epochs
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
